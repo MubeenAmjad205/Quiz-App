@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+
+    <style>
+        * {
+            margin: 0%;
+            padding: 0%;
+        }
+
+        .mainContainer {
+            /* border: 1px solid blue; */
+            text-align: center;
+            height: fit-content;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 {
+            line-height: 100px;
+        }
+
+        form {
+            height: fit-content;
+            /* width: 100vw; */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .mainOl {
+            width: 1000px;
+            list-style: none;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            border: 1px solid red;
+        }
+
+        .leftLi {
+            width: 100%;
+            /* display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; */
+
+        }
+
+        .rightLi {
+            width: 100%;
+        }
+
+        .optionContainer {
+            border: 1px solid black;
+
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        h4 {
+            line-height: 50px;
+            /* border: 1px solid black; */
+        }
+
+        .buttonDiv {
+            margin-top: 50px;
+            width: fit-content;
+            height: fit-content;
+            /* borde    r: 1px solid red; */
+        }
+
+        .buttonDiv button {
+            /* padding: 10px 20px; */
+            padding: 20px 50px;
+            margin-inline: 20px;
+            /* font: bold; */
+            border-radius: 10px;
+        }
+    </style>
+
+    <style>
+        .firstCard {
+            position: absolute;
+            width: 500px;
+            height: 400px;
+            background-color: lightgrey;
+            border-radius: 30px;
+            border: 1px solid black;
+            z-index: 10;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+
+        }
+
+        .lastCard {
+            display: none;
+            /* display: flex; */
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            position: absolute;
+            width: 500px;
+            height: 400px;
+            background-color: lightgrey;
+            border-radius: 30px;
+            border: 1px solid black;
+            z-index: 10;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+        }
+
+        .lastCard h1 {
+            text-align: center;
+            line-height: 100px;
+        }
+
+        .firstCard h1 {
+            text-align: center;
+            line-height: 100px;
+        }
+
+        .firstCard button {
+            padding: 20px 50px;
+            margin: 30px;
+            border-radius: 10px;
+        }
+        .lastCard button {
+            padding: 20px 50px;
+            margin: 30px;
+            border-radius: 10px;
+        }
+
+        .cardBtnDiv {
+            height: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+
+        }
+
+        .headerOl {
+            list-style: none;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <ol class="headerOl">
+            <li id="question">
+            </li>
+            <li id="timer">
+            </li>
+            <li id="score">
+            </li>
+            <li id="remaining">
+            </li>
+        </ol>
+    </header>
+    <div class="lastCard" id="lastCard">
+        <h1 id="result"></h1>
+        <h1 id="scoreResult"></h1>
+        <button type="button" onclick="handleReset()">Reset</button>
+    </div>
+    <div class="firstCard" id="firstCard">
+        <h1>Choose a Topic</h1>
+        <div class="cardBtnDiv">
+            <button onclick="topicClickHandler(this.value) " value="html">HTML</button>
+            <button onclick="topicClickHandler(this.value)" value="css">css</button>
+            <button onclick="topicClickHandler(this.value)" value="javaScript">Java Script</button>
+        </div>
+
+    </div>
+
+    <div class="mainContainer">
+
+        <form id="submit">
+
+            <h2 id="questionTag">Q: Quiz for HTML</h2>
+            <ol class="mainOl">
+                <li class="leftLi">
+                    <div class="optionContainer ">
+                        <input type="radio" name="option" value="" id="radio1">
+                        <h4 id="option1">Hyper Text Markup Language</h4>
+                    </div>
+                    <div class="optionContainer">
+                        <input type="radio" name="option" value="" id="radio2">
+                        <h4 id="option3">Hyper Text Markup Language</h4>
+                    </div>
+                </li>
+                <li class="rightLi">
+                    <div class="optionContainer">
+                        <input type="radio" name="option" value="" id="radio3">
+                        <h4 id="option2">Hyper Text Markup Language</h4>
+                    </div>
+                    <div class="optionContainer">
+                        <input type="radio" name="option" value="" id="radio4">
+                        <h4 id="option4">Hyper Text Markup Language</h4>
+                    </div>
+                </li>
+            </ol>
+            <div class="buttonDiv">
+                <button type="submit" onclick="handleSubmit()" on>Submit</button>
+                <button type="button" onclick="handleReset()">Reset</button>
+            </div>
+
+        </form>
+    </div>
+    <script>
+
+        let html = [
+            {
+                "question": "What does HTML stand for?",
+                "options": [
+                    "A) Hyper Text Markup Language",
+                    "B) Hyperlinks and Text Markup Language",
+                    "C) Home Tool Markup Language",
+                    "D) High Text Machine Language"
+                ],
+                "answer": "A) Hyper Text Markup Language"
+            },
+            {
+                "question": "Who is the creator of HTML?",
+                "options": [
+                    "A) Tim Berners-Lee",
+                    "B) Larry Page",
+                    "C) Steve Jobs",
+                    "D) Elon Musk"
+                ],
+                "answer": "A) Tim Berners-Lee"
+            },
+            {
+                "question": "Which HTML element is used to define the title of a document?",
+                "options": [
+                    "A) <title>",
+                    "B) <head>",
+                    "C) <header>",
+                    "D) <meta>"
+                ],
+                "answer": "A) <title>"
+            },
+            {
+                "question": "Which tag is used to create a hyperlink in HTML?",
+                "options": [
+                    "A) <a>",
+                    "B) <link>",
+                    "C) <href>",
+                    "D) <hyper>"
+                ],
+                "answer": "A) <a>"
+            },
+            {
+                "question": "What is the correct HTML element for inserting a line break?",
+                "options": [
+                    "A) <br>",
+                    "B) <lb>",
+                    "C) <break>",
+                    "D) <b>"
+                ],
+                "answer": "A) <br>"
+            },
+            {
+                "question": "What is the purpose of the <alt> attribute in an <img> tag?",
+                "options": [
+                    "A) To display a tooltip",
+                    "B) To specify an alternative text for an image",
+                    "C) To provide a link",
+                    "D) To specify image dimensions"
+                ],
+                "answer": "B) To specify an alternative text for an image"
+            },
+            {
+                "question": "Which HTML element represents a horizontal line?",
+                "options": [
+                    "B) <hr>",
+                    "C) <br>",
+                    "A) <line>",
+                    "D) <hline>"
+                ],
+                "answer": "B) <hr>"
+            },
+            {
+                "question": "Which attribute specifies an image source?",
+                "options": [
+                    "A) href",
+                    "B) src",
+                    "C) img",
+                    "D) link"
+                ],
+                "answer": "B) src"
+            },
+            {
+                "question": "Which element is used to create a numbered list?",
+                "options": [
+                    "A) <ul>",
+                    "B) <ol>",
+                    "C) <li>",
+                    "D) <list>"
+                ],
+                "answer": "B) <ol>"
+            },
+            {
+                "question": "What is the correct HTML for creating a checkbox?",
+                "options": [
+                    "A) <input type='checkbox'>",
+                    "B) <checkbox>",
+                    "C) <input type='check'>",
+                    "D) <box>"
+                ],
+                "answer": "A) <input type='checkbox'>"
+            }
+        ]
+
+        let javaScript = [
+            {
+                "question": "Which of the following is a JavaScript data type?",
+                "options": [
+                    "A) Boolean",
+                    "B) Number",
+                    "C) String",
+                    "D) All of the above"
+                ],
+                "answer": "D) All of the above"
+            },
+            {
+                "question": "Which symbol is used for comments in JavaScript?",
+                "options": [
+                    "A) <!-- -->",
+                    "B) //",
+                    "C) /* */",
+                    "D) Both B and C"
+                ],
+                "answer": "D) Both B and C"
+            },
+            {
+                "question": "How do you declare a variable in JavaScript?",
+                "options": [
+                    "A) let",
+                    "B) var",
+                    "C) const",
+                    "D) All of the above"
+                ],
+                "answer": "D) All of the above"
+            },
+            {
+                "question": "What will `typeof NaN` return?",
+                "options": [
+                    "A) 'number'",
+                    "B) 'NaN'",
+                    "C) 'undefined'",
+                    "D) 'object'"
+                ],
+                "answer": "A) 'number'"
+            },
+            {
+                "question": "Which method can be used to round a number down to the nearest integer?",
+                "options": [
+                    "A) Math.floor()",
+                    "B) Math.round()",
+                    "C) Math.ceil()",
+                    "D) Math.min()"
+                ],
+                "answer": "A) Math.floor()"
+            },
+            {
+                "question": "What keyword is used to declare a constant in JavaScript?",
+                "options": [
+                    "A) var",
+                    "B) const",
+                    "C) let",
+                    "D) static"
+                ],
+                "answer": "B) const"
+            },
+            {
+                "question": "What is the correct syntax to output 'Hello World' in JavaScript?",
+                "options": [
+                    "A) console.log('Hello World')",
+                    "B) print('Hello World')",
+                    "C) echo 'Hello World'",
+                    "D) document.write('Hello World')"
+                ],
+                "answer": "A) console.log('Hello World')"
+            },
+            {
+                "question": "How can you detect the client's browser name in JavaScript?",
+                "options": [
+                    "A) navigator.appName",
+                    "B) browser.name",
+                    "C) client.browserName",
+                    "D) window.browser"
+                ],
+                "answer": "A) navigator.appName"
+            },
+            {
+                "question": "What will be the output of 3 + '3' in JavaScript?",
+                "options": [
+                    "A) 6",
+                    "B) 33",
+                    "C) Error",
+                    "D) NaN"
+                ],
+                "answer": "B) 33"
+            },
+            {
+                "question": "Which function is used to parse a string to an integer?",
+                "options": [
+                    "A) parseInt()",
+                    "B) parseFloat()",
+                    "C) Number()",
+                    "D) int()"
+                ],
+                "answer": "A) parseInt()"
+            }
+        ]
+
+        let css = [
+            {
+                "question": "What does CSS stand for?",
+                "options": [
+                    "A) Creative Style Sheets",
+                    "B) Cascading Style Sheets",
+                    "C) Computer Style Sheets",
+                    "D) Colorful Style Sheets"
+                ],
+                "answer": "B) Cascading Style Sheets"
+            },
+            {
+                "question": "Which property is used to change the background color?",
+                "options": [
+                    "A) color",
+                    "B) background-color",
+                    "C) bgColor",
+                    "D) color-background"
+                ],
+                "answer": "B) background-color"
+            },
+            {
+                "question": "Which CSS property is used to control text size?",
+                "options": [
+                    "A) font-style",
+                    "B) text-size",
+                    "C) font-size",
+                    "D) text-style"
+                ],
+                "answer": "C) font-size"
+            },
+            {
+                "question": "How do you make text bold in CSS?",
+                "options": [
+                    "A) font-style: bold;",
+                    "B) text-weight: bold;",
+                    "C) font-weight: bold;",
+                    "D) style: bold;"
+                ],
+                "answer": "C) font-weight: bold;"
+            },
+            {
+                "question": "Which property is used to create space between elements?",
+                "options": [
+                    "A) spacing",
+                    "B) padding",
+                    "C) margin",
+                    "D) Both B and C"
+                ],
+                "answer": "D) Both B and C"
+            },
+            {
+                "question": "Which CSS property is used to change the text color?",
+                "options": [
+                    "A) text-color",
+                    "B) color",
+                    "C) font-color",
+                    "D) background-color"
+                ],
+                "answer": "B) color"
+            },
+            {
+                "question": "How do you select an element with the ID 'header' in CSS?",
+                "options": [
+                    "A) .header",
+                    "B) #header",
+                    "C) *header",
+                    "D) header"
+                ],
+                "answer": "B) #header"
+            },
+            {
+                "question": "What does the `z-index` property in CSS control?",
+                "options": [
+                    "A) Element visibility",
+                    "B) Element stacking order",
+                    "C) Element size",
+                    "D) Element font size"
+                ],
+                "answer": "B) Element stacking order"
+            },
+            {
+                "question": "Which of the following properties is used to set the space between lines of text?",
+                "options": [
+                    "A) line-height",
+                    "B) text-align",
+                    "C) letter-spacing",
+                    "D) font-size"
+                ],
+                "answer": "A) line-height"
+            },
+            {
+                "question": "Which property is used to make text italic in CSS?",
+                "options": [
+                    "A) text-decoration: italic;",
+                    "B) font-style: italic;",
+                    "C) font-weight: italic;",
+                    "D) font: italic;"
+                ],
+                "answer": "B) font-style: italic;"
+            }
+        ]
+
+
+
+        // let topic = "html";
+        let selectedArray = html
+        let qusetionNumber = 0;
+        let questionObj;
+        let score = 0;
+        let timer = 15;
+        let time;
+
+        function starTimer() {
+            timer = 15;
+            // let ms = 1000
+            clearInterval(time);
+            time = setInterval(() => {
+                timer--;
+                document.getElementById("timer").innerText = `Timer:${timer}s`;
+                if (timer <= 0) {
+                    clearInterval(time);
+                    // timer = 15;
+                    // ms = 10000
+                    nextQuestion();
+
+                }
+
+            }, 1000)
+
+        }
+        function handleReset() {
+            firstCard.style.display = "block"
+            qusetionNumber = 0;
+            score = 0;
+            // maper(qusetionNumber);
+
+        }
+        function nextQuestion() {
+            qusetionNumber++;
+
+            maper(qusetionNumber);
+
+            let options = document.getElementsByName("option")
+            for (let option of options) {
+                option.checked = false;
+            }
+        }
+
+        async function topicClickHandler(value) {
+            if (value == "html") {
+                selectedArray = html;
+
+            } else if (value == "javaScript") {
+                selectedArray = javaScript;
+
+            } else if (value == "css") {
+                selectedArray = css;
+
+            }
+            let firstCard = document.getElementById("firstCard")
+            firstCard.style.display = "none"
+
+            console.log("working");
+            console.log(selectedArray);
+            maper(qusetionNumber)
+
+        }
+
+        function maper(qusetionNumber) {
+
+            document.getElementById("lastCard").style.display = "none";
+            if (qusetionNumber == selectedArray.length) {
+                document.getElementById("lastCard").style.display = "flex";
+                if (score >= 5) {
+                    document.getElementById("result").innerText = "Hurray! You are passed." 
+                    document.getElementById("scoreResult").innerText = `Score:${score}` 
+                    
+                }else{
+                    
+                    document.getElementById("result").innerText = "Ops! You are failed." 
+                    document.getElementById("scoreResult").innerText = `Score:${score}` 
+                }
+            }
+            starTimer();
+            document.getElementById("timer").innerText = `Timer:${timer}s`;
+            document.getElementById("score").innerText = `Scores:${score}`;
+
+
+            document.getElementById("question").innerText = `Q:${qusetionNumber}`;
+            document.getElementById("remaining").innerText = `${selectedArray.length - (qusetionNumber)} - out of - ${selectedArray.length}`;
+            questionObj = selectedArray[qusetionNumber];
+            questionTag.innerText = questionObj.question;
+            option1.innerText = questionObj.options[0];
+            radio1.value = questionObj.options[0];
+            // option1.data = questionObj.options[0];
+            // console.log(option1.value)
+
+            option2.innerText = questionObj.options[1];
+            radio3.value = questionObj.options[1];
+            // console.log(option2.value)
+
+            option3.innerText = questionObj.options[2];
+            radio2.value = questionObj.options[2];
+            // console.log(option3.value)
+
+            option4.innerText = questionObj.options[3];
+            radio4.value = questionObj.options[3];
+            // console.log(option4 .value)
+        }
+
+        document.getElementById("submit").addEventListener("submit", function (e) {
+            e.preventDefault();
+            // console.log(e)    
+        })
+
+        function handleSubmit() {
+            for (let i = 1; i <= 4; i++) {
+                let radio = document.getElementById(`radio${i}`)
+                // console.log(tempOption);
+
+                if (radio.checked) {
+                    console.log(radio.value);
+                    questionObj = selectedArray[qusetionNumber]
+
+                    if (radio.value == questionObj.answer) {
+                        score++
+                        starTimer();
+                        // clearInterval(time);
+                        nextQuestion();
+                        score.innerText = `Scores:${score}`
+
+                        // console.log("working")
+                    } else {
+                        if (i = 4) {
+                            starTimer();
+                            // clearInterval(time);
+                            nextQuestion();
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
